@@ -52,3 +52,21 @@ Console.WriteLine(y);
 Console.WriteLine(y--);
 Console.WriteLine(y);
 
+//Strings
+
+string emptyString = "";
+string emptyString2 = String.Empty;
+bool areEmptyStringsEqual = emptyString == emptyString2;
+string nullString = null;
+bool isEmptyString = (emptyString == null) || (emptyString == "");
+isEmptyString = String.IsNullOrEmpty(emptyString);
+
+//Literal
+string someString = "Hello \"World";
+Console.WriteLine("Hello");
+Console.WriteLine("World");
+Console.WriteLine("Hello\nWorld");
+string filePath = "C:\\windows\\system32";
+
+//Verbatim
+filePath = @"C:\windows\system32";
