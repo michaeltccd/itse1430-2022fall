@@ -19,15 +19,12 @@ Create a new Console project to hold your code.
 1. Open Visual Studio.
 1. Create a new project in a new solution.
     1. Select the `Console App (.NET Core)` project template.    
-    1. Set the project name to `CharacterCreator.ConsoleHost`.
+    1. Set the project name to `<name>.CharacterCreator.ConsoleHost`.
 	1. Set the solution name to `Lab2`.
     1. Ensure the location is under your `Labs` folder in your local Git repository.
     1. Create the project.
-1. Update to .NET 5.
-   1. Right click the project in `Solution Explorer`. Select `Properties` from the menu.
-   1. Under the `Application` settings set the `Target Framework` field to `.NET 5`.
-   1. Close the document tab.
-   1. Compile the project.
+1. Fix project settings.
+   1. TBD
 1. Add the appropriate file header.
 
 Like in the previous lab display basic program information on startup.
@@ -85,8 +82,9 @@ The character types are not tied to a UI so create a separate class library proj
 Create the new business layer project.
 
 1. Create a new `Class Library (.NET Core)` project in the existing solution. DO NOT select `Class Library (.NET Standard)`.
-1. Set the project name to `CharacterCreator`.
-1. After creation set the framework to .NET 5.
+1. Set the project name to `<name>.CharacterCreator`.
+1. After creation set the framework to .NET 6.
+1. TBD
 
 This project will be the business layer for the application. It will house any logic that is not tied to a UI. The UI project will rely on this.
 
