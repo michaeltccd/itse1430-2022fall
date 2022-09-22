@@ -1,20 +1,13 @@
 ﻿//Movie definition
 using MovieLibrary;
 
-Movie movie = new Movie();
-movie.title = "Jaws";
-movie.releaseYear = 1977;
-
-string title = "";
-string description = "";
-
-int runLength = 0; //in minutes
-int releaseYear = 1900;
-string rating = "";
-bool isClassic = false;
+//Movie movie = new Movie();
+//movie.title = "Jaws";
+//movie.releaseYear = 1977;
 
 DisplayInformation();
 
+Movie movie = null;
 //bool done = false;
 var done = false;
 do
@@ -27,12 +20,13 @@ do
     {    
         case MenuOption.Add:
         {
-            AddMovie(); 
+            var theMovie = AddMovie();
+            movie = theMovie.Clone();
             break;
         }
 
         case MenuOption.Edit: EditMovie(); break;
-        case MenuOption.View: ViewMovie(); break;
+        case MenuOption.View: ViewMovie(movie); break;
         case MenuOption.Delete: DeleteMovie(); break;
         case MenuOption.Quit: done = true; break;
     };
@@ -152,43 +146,60 @@ string ReadString ( string message, bool required )
     };
 }
 
-void AddMovie ()
+//TODO: Fix return
+Movie AddMovie ()
 {
-    //string title = "";
-    title = ReadString("Enter a title: ", true);
+    Movie movie = new Movie();
 
+    //string title = "";
+    //movie.title = ReadString("Enter a title: ", true);
+    movie.SetTitle(ReadString("Enter a title: ", true));
+    
     //string description = "";
-    description = ReadString("Enter an optional description: ", false);
+    movie._description = ReadString("Enter an optional description: ", false);
+
+    //var description = movie._description;
+    //var description = movie.GetDescription();
 
     //int runLength = 0; //in minutes
-    runLength = ReadInt32("Enter a run length (in minutes): ", 0, 300);
+    movie._runLength = ReadInt32("Enter a run length (in minutes): ", 0, 300);
 
-    releaseYear = ReadInt32("Enter the release year: ", 1900, 2100);
-    rating = ReadString("Entering MPAA rating: ", true);
+    movie._releaseYear = ReadInt32("Enter the release year: ", 1900, 2100);
+    movie._rating = ReadString("Entering MPAA rating: ", true);
 
-    isClassic = ReadBoolean("Is this a classic? ");
+    movie._isClassic = ReadBoolean("Is this a classic? ");
+
+    return movie;
+}
+
+Movie GetSelectedMovie()
+{ 
+    //HACK: For now
+    return movie;
 }
 
 void DeleteMovie ()
 {
+    var selectedMovie = GetSelectedMovie();
+
     //No movie
-    if (title == "")
+    if (selectedMovie == null)
         return;
 
     //Not confirmed
-    if (!ReadBoolean("Are you sure you want to delete the movie (Y/N)? "))
+    if (!ReadBoolean($"Are you sure you want to delete the movie '{selectedMovie.GetTitle()}' (Y/N)? "))
         return;
 
     //TODO: Delete movie
-    title = "";
+    movie = null;
 }
 
 void EditMovie ()
 { }
 
-void ViewMovie ()
+void ViewMovie ( Movie movie )
 {
-    if (title == "")
+    if (movie == null)
     {
         Console.WriteLine("No movies available");
         return;
@@ -204,19 +215,20 @@ void ViewMovie ()
     // Option 3 - String interpolation
     // Console.WriteLine($"Length: {runLength} mins");
     //string someValue = $"Length = {runLength}";
-     
+
     //ToString
-    Console.WriteLine($"{title} ({releaseYear})");
+    //Console.WriteLine($"{movie.title} ({movie._releaseYear})");
+    Console.WriteLine($"{movie.GetTitle()} ({movie._releaseYear})");
     //Console.WriteLine(releaseYear);
     //Console.WriteLine(releaseYear.ToString());
 
     //Console.WriteLine("Length: " + runLength + " mins");
     //Console.WriteLine(String.Format("Length: {0} mins", runLength));
     //Console.WriteLine("Length: {0} mins", runLength);
-    Console.WriteLine($"Length: {runLength} mins");
+    Console.WriteLine($"Length: {movie._runLength} mins");
 
-    Console.WriteLine($"Rated {rating}");
+    Console.WriteLine($"Rated {movie._rating}");
     //Console.WriteLine($"This {(isClassic ? "Is" : "Is Not")} a Classic");
-    Console.WriteLine($"Is Classic: {(isClassic ? "Yes" : "No")}");
-    Console.WriteLine(description);
+    Console.WriteLine($"Is Classic: {(movie._isClassic ? "Yes" : "No")}");
+    Console.WriteLine(movie._description);
 }
