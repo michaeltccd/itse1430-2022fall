@@ -1,20 +1,13 @@
-﻿//Movie definition
-using MovieLibrary;
-
-//Movie movie = new Movie();
-//movie.title = "Jaws";
-//movie.releaseYear = 1977;
+﻿using MovieLibrary;
 
 DisplayInformation();
 
 Movie movie = null;
-//bool done = false;
-var done = false;
+var done = false;  //bool done = false;
 do
 {
-    //Type inferencing - compiler figures out type based upon context
-    //MenuOption input = DisplayMenu();
-    var input = DisplayMenu();
+    //Type inferencing - compiler figures out type based upon context    
+    var input = DisplayMenu();   //MenuOption input = DisplayMenu();
     Console.WriteLine();
     switch (input)
     {    
@@ -153,21 +146,23 @@ Movie AddMovie ()
 
     //string title = "";
     //movie.title = ReadString("Enter a title: ", true);
-    movie.SetTitle(ReadString("Enter a title: ", true));
+    //movie.SetTitle(ReadString("Enter a title: ", true));
+    movie.Title = ReadString("Enter a title: ", true);
+    //movie.Title = null;
     
     //string description = "";
-    movie._description = ReadString("Enter an optional description: ", false);
+    movie.Description = ReadString("Enter an optional description: ", false);
 
     //var description = movie._description;
     //var description = movie.GetDescription();
 
     //int runLength = 0; //in minutes
-    movie._runLength = ReadInt32("Enter a run length (in minutes): ", 0, 300);
+    movie.RunLength = ReadInt32("Enter a run length (in minutes): ", 0, 300);
 
-    movie._releaseYear = ReadInt32("Enter the release year: ", 1900, 2100);
-    movie._rating = ReadString("Entering MPAA rating: ", true);
+    movie.ReleaseYear = ReadInt32("Enter the release year: ", 1900, 2100);
+    movie.Rating = ReadString("Entering MPAA rating: ", true);
 
-    movie._isClassic = ReadBoolean("Is this a classic? ");
+    movie.IsClassic = ReadBoolean("Is this a classic? ");
 
     return movie;
 }
@@ -187,7 +182,7 @@ void DeleteMovie ()
         return;
 
     //Not confirmed
-    if (!ReadBoolean($"Are you sure you want to delete the movie '{selectedMovie.GetTitle()}' (Y/N)? "))
+    if (!ReadBoolean($"Are you sure you want to delete the movie '{selectedMovie.Title}' (Y/N)? "))
         return;
 
     //TODO: Delete movie
@@ -217,18 +212,21 @@ void ViewMovie ( Movie movie )
     //string someValue = $"Length = {runLength}";
 
     //ToString
-    //Console.WriteLine($"{movie.title} ({movie._releaseYear})");
-    Console.WriteLine($"{movie.GetTitle()} ({movie._releaseYear})");
+    //Console.WriteLine($"{movie.title} ({movie.ReleaseYear})");
+    Console.WriteLine($"{movie.Title} ({movie.ReleaseYear})");
     //Console.WriteLine(releaseYear);
     //Console.WriteLine(releaseYear.ToString());
 
     //Console.WriteLine("Length: " + runLength + " mins");
     //Console.WriteLine(String.Format("Length: {0} mins", runLength));
     //Console.WriteLine("Length: {0} mins", runLength);
-    Console.WriteLine($"Length: {movie._runLength} mins");
+    Console.WriteLine($"Length: {movie.RunLength} mins");
 
-    Console.WriteLine($"Rated {movie._rating}");
+    Console.WriteLine($"Rated {movie.Rating}");
     //Console.WriteLine($"This {(isClassic ? "Is" : "Is Not")} a Classic");
-    Console.WriteLine($"Is Classic: {(movie._isClassic ? "Yes" : "No")}");
-    Console.WriteLine(movie._description);
+    Console.WriteLine($"Is Classic: {(movie.IsClassic ? "Yes" : "No")}");
+    Console.WriteLine(movie.Description);
+
+    var blackAndWhite = movie.IsBlackAndWhite;
+    //movie.IsBlackAndWhite = true;
 }
