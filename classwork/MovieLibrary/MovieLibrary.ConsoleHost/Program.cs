@@ -3,6 +3,8 @@
 DisplayInformation();
 
 Movie movie = null;
+MovieDatabase database = new MovieDatabase();
+
 var done = false;  //bool done = false;
 do
 {
@@ -113,6 +115,9 @@ int ReadInt32 ( string message, int minimumValue, int maximumValue )
                 return result;
         };
 
+        //Int32.MinValue;
+        //Int32.MaxValue;
+
         //if (false)
             //break;  //Exit loop
             //continue; //Exit iteration
@@ -142,13 +147,14 @@ string ReadString ( string message, bool required )
 //TODO: Fix return
 Movie AddMovie ()
 {
-    Movie movie = new Movie();
+    Movie movie = new Movie("Title");
+    //movie = new Movie();
+    //movie.Title = "Title";
 
     //string title = "";
     //movie.title = ReadString("Enter a title: ", true);
     //movie.SetTitle(ReadString("Enter a title: ", true));
-    movie.Title = ReadString("Enter a title: ", true);
-    //movie.Title = null;
+    movie.Title = ReadString("Enter a title: ", true);    
     
     //string description = "";
     movie.Description = ReadString("Enter an optional description: ", false);
@@ -160,16 +166,27 @@ Movie AddMovie ()
     movie.RunLength = ReadInt32("Enter a run length (in minutes): ", 0, 300);
 
     movie.ReleaseYear = ReadInt32("Enter the release year: ", 1900, 2100);
+    if (movie.ReleaseYear >= Movie.YearColorWasIntroduced)
+        Console.WriteLine("Wow that is an old movie");
+
+    //var emptyMovie = Movie.Empty.Title;    
     movie.Rating = ReadString("Entering MPAA rating: ", true);
 
     movie.IsClassic = ReadBoolean("Is this a classic? ");
-
+    
     return movie;
 }
 
 Movie GetSelectedMovie()
-{ 
+{
     //HACK: For now
+    var item = database.Get(0);
+
+    //object obj = "Hello";
+    //obj = 10;
+    //obj = 4.15;
+    //obj.ToString();
+
     return movie;
 }
 
