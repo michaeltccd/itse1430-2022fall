@@ -27,7 +27,7 @@
             //Initialize(title, "");
         }        
 
-        public Movie ( string title, string description )
+        public Movie ( string title, string description ) : base() // Object.ctor()
         {
             //Initialize(title, description);
 
@@ -51,11 +51,13 @@
             // string get_Title () 
             get                 
             {
-                return String.IsNullOrEmpty(_title) ? "" : _title;
+                //return String.IsNullOrEmpty(_title) ? "" : _title;
+                return _title ?? "";
             }  
 
             // void set_Title ( string value )
-            set { _title = String.IsNullOrEmpty(value) ? "" : value.Trim(); }
+            //set { _title = String.IsNullOrEmpty(value) ? "" : value.Trim(); }
+            set { _title = value?.Trim() ?? ""; }
         }
         private string _title;
 
@@ -73,8 +75,10 @@
         /// <summary>Gets or sets the description.</summary>
         public string Description
         {
-            get { return String.IsNullOrEmpty(_description) ? "" : _description; }
-            set { _description = String.IsNullOrEmpty(value) ? "" : value.Trim(); }
+            //get { return String.IsNullOrEmpty(_description) ? "" : _description; }
+            get { return _description ?? ""; }
+            //set { _description = String.IsNullOrEmpty(value) ? "" : value.Trim(); }
+            set { _description = value?.Trim() ?? ""; }
         }         
         private string _description;
 
@@ -101,8 +105,10 @@
         /// <summary>Gets or sets the MPAA rating.</summary>
         public string Rating
         {
-            get { return String.IsNullOrEmpty(_rating) ? "" : _rating; }
-            set { _rating = String.IsNullOrEmpty(value) ? "" : value.Trim(); }
+            //get { return String.IsNullOrEmpty(_rating) ? "" : _rating; }
+            get { return _rating ?? ""; }
+            //set { _rating = String.IsNullOrEmpty(value) ? "" : value.Trim(); }
+            set { _rating = value?.Trim() ?? ""; }
         }
         private string _rating;
 
@@ -152,7 +158,9 @@
         //Equals & GetHashCode
         //GetType
         public override string ToString ()
-        {
+        {            
+            //ToString == this.ToString();
+            var str = base.ToString();   //Calls base type impl
             return Title;
         }
     }
