@@ -1,4 +1,5 @@
-﻿using MovieLibrary;
+﻿//namespace MovieLibrary.ConsoleHost
+using MovieLibrary;
 
 DisplayInformation();
 
