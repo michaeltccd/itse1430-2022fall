@@ -1,5 +1,5 @@
 # Character Creator (ITSE 1430)
-## Version 2.0
+## Version 2.1
 
 In this lab you will create a Console application to create a character for a [Role Playing Game](https://en.wikipedia.org/wiki/Role-playing_game) (RPG). 
 
@@ -18,13 +18,14 @@ Create a new Console project to hold your code.
 
 1. Open Visual Studio.
 1. Create a new project in a new solution.
-    1. Select the `Console App (.NET Core)` project template.    
+    1. Select the `Console App` project template.    
     1. Set the project name to `<name>.CharacterCreator.ConsoleHost`.
 	1. Set the solution name to `Lab2`.
     1. Ensure the location is under your `Labs` folder in your local Git repository.
     1. Create the project.
 1. Fix project settings.
-   1. TBD
+   1. Click the project file in Solution Explorer to open it.
+   1. Find the line `<nullable>enable</nullable>` and replace with `<nullable>disable</nullable>`.
 1. Add the appropriate file header.
 
 Like in the previous lab display basic program information on startup.
