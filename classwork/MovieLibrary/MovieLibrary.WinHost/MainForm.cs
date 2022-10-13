@@ -2,23 +2,77 @@ namespace MovieLibrary.WinHost
 {
     public partial class MainForm : Form
     {
-        public MainForm()
+        #region Construction
+
+        public MainForm ()
         {
             InitializeComponent();
         }
-
+        #endregion
+        
+        //Called to handle Movies\Add
         private void OnMovieAdd ( object sender, EventArgs e )
         {
             var child = new MovieForm();
 
             //Showing form modally
-            if (child.ShowDialog() != 
-                    DialogResult.OK)
+            if (child.ShowDialog() != DialogResult.OK)
                 return;
             //child.Show();
 
             //TODO: Save this off
-            var movie = child.SelectedMovie;
+            _movie = child.SelectedMovie;
+            UpdateUI();
+        }
+
+        private Movie _movie;
+
+        private void OnMovieDelete ( object sender, EventArgs e )
+        {
+            var movie = GetSelectedMovie();
+            if (movie == null)
+                return;
+
+            if (!Confirm($"Are you sure you want to delete '{movie.Title}'?", "Delete"))
+                return;
+
+            //TODO: Implement Delete
+            _movie = null;
+            UpdateUI();
+        }
+
+        protected override void OnFormClosing ( FormClosingEventArgs e )
+        {
+            base.OnFormClosing(e);
+
+            if (Confirm("Are you sure you want to leave?", "Close"))
+                return;
+
+            //Stop the event
+            e.Cancel = true;
+        }
+
+        protected override void OnFormClosed ( FormClosedEventArgs e )
+        {
+            base.OnFormClosed(e);
+        }
+
+        #region Private Members
+
+        private void UpdateUI ()
+        {
+            //TODO: Get movies
+
+            _lstMovies.Items.Clear();
+            if (_movie != null)
+            {
+                _lstMovies.Items.Add(_movie);
+            };
+        }
+
+        private Movie GetSelectedMovie ()
+        {
+            return _movie;
         }
 
         private bool Confirm ( string message, string title )
@@ -32,14 +86,23 @@ namespace MovieLibrary.WinHost
         {
             MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
+        #endregion
 
-        private void _miMovieDelete_Click ( object sender, EventArgs e )
+        private void OnMovieEdit ( object sender, EventArgs e )
         {
-            if (!Confirm("Are you sure you want to delete the movie?", "Delete"))
+            var movie = GetSelectedMovie();
+            if (movie == null)
                 return;
 
-            //TODO: Implement
-            DisplayError("Not implemented yet", "Delete");
+            var child = new MovieForm();
+            child.SelectedMovie = movie;
+
+            if (child.ShowDialog() != DialogResult.OK)
+                return;
+
+            //TODO: Save this off
+            _movie = child.SelectedMovie;
+            UpdateUI();
         }
     }
 }

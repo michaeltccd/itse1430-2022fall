@@ -12,16 +12,40 @@ namespace MovieLibrary.WinHost
 {
     public partial class MovieForm : Form
     {
+        #region Construction
+
         public MovieForm ()
         {
             InitializeComponent();
         }
+        #endregion
 
         /// <summary>Gets or sets the movie being edited.</summary>
         public Movie SelectedMovie { get; set; }
 
+        protected override void OnLoad ( EventArgs e )
+        {
+            base.OnLoad(e);
+
+            //Do any init just before UI is rendered
+            if (SelectedMovie != null)
+            { 
+                //Load UI
+                _txtTitle.Text = SelectedMovie.Title;
+                _txtDescription.Text = SelectedMovie.Description;
+                _cbRating.Text = SelectedMovie.Rating;
+
+                _chkIsClassic.Checked = SelectedMovie.IsClassic;
+                _txtRunLength.Text = SelectedMovie.RunLength.ToString();
+                _txtReleaseYear.Text = SelectedMovie.ReleaseYear.ToString();
+            };
+
+        }
+
         private void OnSave ( object sender, EventArgs e )
         {
+            var btn = sender as Button;
+
             //TODO: Add validation
             var movie = new Movie();
             movie.Title = _txtTitle.Text;
@@ -32,24 +56,9 @@ namespace MovieLibrary.WinHost
             movie.RunLength = GetInt32(_txtRunLength);
             movie.ReleaseYear = GetInt32(_txtReleaseYear);
 
-            if (movie.Title.Length == 0)
+            if (!movie.Validate(out var error))
             {
-                DisplayError("Title is required", "Save");
-                return;
-            };
-            if (movie.Rating.Length == 0)
-            {
-                DisplayError("Rating is required", "Save");
-                return;
-            };
-            if (movie.RunLength < 0)
-            {
-                DisplayError("Run Length must be >= 0", "Save");
-                return;
-            };
-            if (movie.ReleaseYear < 1900)
-            {
-                DisplayError("Release Year must be >= 1900", "Save");
+                DisplayError(error, "Save");
                 return;
             };
 
@@ -60,6 +69,8 @@ namespace MovieLibrary.WinHost
             DialogResult = DialogResult.OK;
             Close();
         }
+
+        #region Private Members
 
         private void DisplayError ( string message, string title )
         {
@@ -73,5 +84,6 @@ namespace MovieLibrary.WinHost
 
             return -1;
         }
+        #endregion
     }
 }
