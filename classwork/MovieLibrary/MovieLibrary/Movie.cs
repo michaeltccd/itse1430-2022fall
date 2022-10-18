@@ -1,4 +1,9 @@
-﻿namespace MovieLibrary
+﻿/*
+ * Name
+ * Lab
+ * Fall 2022
+ */
+namespace MovieLibrary
 {    
     /// <summary>Represents a movie.</summary>
     public class Movie

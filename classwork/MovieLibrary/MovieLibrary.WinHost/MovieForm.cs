@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace MovieLibrary.WinHost
+﻿namespace MovieLibrary.WinHost
 {
     public partial class MovieForm : Form
     {
@@ -74,7 +64,7 @@ namespace MovieLibrary.WinHost
 
         private void DisplayError ( string message, string title )
         {
-            MessageBox.Show(message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, message, title, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private int GetInt32 ( TextBox control )
