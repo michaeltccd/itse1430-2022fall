@@ -8,25 +8,28 @@ namespace MovieLibrary
     /// <summary>Represents a movie.</summary>
     public class Movie
     {
+        #region Construction
+
+        /// <summary>Initializes an instance of the <see cref="Movie"/> class.</summary>
         public Movie () : this("", "")
         {
-            //Initialize("", "");
         }
 
+        /// <summary>Initializes an instance of the <see cref="Movie"/> class.</summary>
+        /// <param name="title">The title.</param>
         public Movie ( string title ) : this(title, "")
         {
-            //Init that field initializers cannot do
-            //Title = title;
-            //Initialize(title, "");
-        }        
+        }
 
+        /// <summary>Initializes an instance of the <see cref="Movie"/> class.</summary>
+        /// <param name="title">The title.</param>
+        /// <param name="description">The description.</param>
         public Movie ( string title, string description ) : base() // Object.ctor()
         {
-            //Initialize(title, description);
-
             Title = title;
             Description = description;
         }
+        #endregion
 
         /// <summary>Gets the unique ID.</summary>
         public int Id { get; private set; }
@@ -97,6 +100,9 @@ namespace MovieLibrary
             movie.IsClassic = IsClassic;            
         }
 
+        /// <summary>Validates a movie.</summary>
+        /// <param name="errorMessage">The error message.</param>
+        /// <returns>true if valid or false otherwise.</returns>
         public bool Validate ( out string errorMessage )
         {
             if (Title.Length == 0)
@@ -124,6 +130,7 @@ namespace MovieLibrary
             return true;
         }
 
+        /// <inheritdoc />
         public override string ToString ()
         {            
             return Title;
