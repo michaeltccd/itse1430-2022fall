@@ -26,6 +26,8 @@ namespace MovieLibrary.WinHost
             base.OnFormClosed(e);
         }
 
+        #region Event Handlers
+
         //Called to handle Movies\Add
         private void OnMovieAdd ( object sender, EventArgs e )
         {
@@ -71,6 +73,19 @@ namespace MovieLibrary.WinHost
             UpdateUI();
         }
 
+        private void OnFileExit ( object sender, EventArgs e )
+        {
+            Close();
+        }
+
+        private void OnHelpAbout ( object sender, EventArgs e )
+        {
+            var about = new AboutForm();
+
+            about.ShowDialog();
+        }
+        #endregion
+
         #region Private Members
 
         private void UpdateUI ()
@@ -82,11 +97,6 @@ namespace MovieLibrary.WinHost
 
             _lstMovies.Items.Clear();
             _lstMovies.Items.AddRange(movies);
-
-            //if (_movie != null)
-            //{
-            //    _lstMovies.Items.Add(_movie);
-            //};
         }
 
         private Movie GetSelectedMovie ()
@@ -108,18 +118,6 @@ namespace MovieLibrary.WinHost
 
         private Movie _movie;
         private MovieDatabase _movies = new MovieDatabase();
-        #endregion
-
-        private void OnFileExit ( object sender, EventArgs e )
-        {
-            Close();
-        }
-
-        private void OnHelpAbout ( object sender, EventArgs e )
-        {
-            var about = new AboutForm();
-
-            about.ShowDialog();
-        }
+        #endregion        
     }
 }
