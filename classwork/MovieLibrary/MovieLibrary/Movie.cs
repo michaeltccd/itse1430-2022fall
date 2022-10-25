@@ -32,7 +32,7 @@ namespace MovieLibrary
         #endregion
 
         /// <summary>Gets the unique ID.</summary>
-        public int Id { get; private set; }
+        public int Id { get; set; }
 
         /// <summary>Gets or sets the title.</summary>
         public string Title
@@ -92,6 +92,7 @@ namespace MovieLibrary
         /// <param name="movie">Movie to copy into.</param>
         public void CopyTo ( Movie movie )
         {
+            movie.Id = Id;
             movie.Title = Title;
             movie.Description = Description;
             movie.RunLength = RunLength;

@@ -33,13 +33,20 @@ namespace MovieLibrary.WinHost
         {
             var child = new MovieForm();
 
-            //Showing form modally
-            if (child.ShowDialog(this) != DialogResult.OK)
-                return;            
+            do
+            {
+                //Showing form modally
+                if (child.ShowDialog(this) != DialogResult.OK)
+                    return;
 
-            //TODO: Save this off
-            _movie = child.SelectedMovie;
-            UpdateUI();
+                if (_movies.Add(child.SelectedMovie, out var error) != null)
+                {
+                    UpdateUI();
+                    return;                    
+                };
+
+                DisplayError(error, "Add Failed");
+            } while (true);
         }
         
         private void OnMovieDelete ( object sender, EventArgs e )
@@ -51,8 +58,7 @@ namespace MovieLibrary.WinHost
             if (!Confirm($"Are you sure you want to delete '{movie.Title}'?", "Delete"))
                 return;
 
-            //TODO: Implement Delete
-            _movie = null;
+            _movies.Remove(movie.Id);
             UpdateUI();
         }
 
@@ -65,12 +71,19 @@ namespace MovieLibrary.WinHost
             var child = new MovieForm();
             child.SelectedMovie = movie;
 
-            if (child.ShowDialog(this) != DialogResult.OK)
-                return;
+            do
+            {
+                if (child.ShowDialog(this) != DialogResult.OK)
+                    return;
 
-            //TODO: Save this off
-            _movie = child.SelectedMovie;
-            UpdateUI();
+                if (_movies.Update(movie.Id, child.SelectedMovie, out var error))
+                {
+                    UpdateUI();
+                    return;
+                };
+
+                DisplayError(error, "Update Failed");
+            } while (true);
         }
 
         private void OnFileExit ( object sender, EventArgs e )
@@ -91,9 +104,7 @@ namespace MovieLibrary.WinHost
         private void UpdateUI ()
         {
             //Get movies
-            var movies = _movies.GetAll();
-            //movies[0] = new Movie();
-            movies[0].Title = "New Movie";
+            var movies = _movies.GetAll();            
 
             _lstMovies.Items.Clear();
             _lstMovies.Items.AddRange(movies);
