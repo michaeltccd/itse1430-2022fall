@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace MovieLibrary
 {
@@ -6,9 +6,73 @@ namespace MovieLibrary
     public class MovieDatabase
     {
         //TODO: Seed database
+        public MovieDatabase ()
+        {
+            //Array/collection initializer syntax
+            //var movies = new Movie[3];
+
+            //Object initializer syntax
+            //new Movie("Jaws", "PG");
+            //var movie = new Movie();
+            //movie.Title = "Jaws";
+            //movie.Rating = "PG";
+            //movie.RunLength = 210;
+            //movie.ReleaseYear = 1977;
+            //movie.Description = "Shark eats people";
+            //movie.IsClassic = true;
+            //movies[0] = new Movie() {
+            //    Title = "Jaws",
+            //    Rating = "PG",
+            //    RunLength = 210,
+            //    ReleaseYear = 1977,
+            //    Description = "Shark eats people",
+            //    IsClassic = true,
+            //};            
+            //movies[1] = new Movie() {
+            //    Title = "Jaws 2",
+            //    Rating = "PG-13",
+            //    RunLength = 220,
+            //    ReleaseYear = 1979,
+            //    Description = "Shark eats people...again"                
+            //};
+            //movies[2] = new Movie() {
+            //            Title = "Dune",
+            //            Rating = "PG-13",
+            //            RunLength = 320,
+            //            ReleaseYear = 1985,
+            //            Description = "Based on book",
+            //        };
+            var movies = new Movie[] {
+                new Movie() {
+                    Title = "Jaws",
+                    Rating = "PG",
+                    RunLength = 210,
+                    ReleaseYear = 1977,
+                    Description = "Shark eats people",
+                    IsClassic = true,
+                },
+                new Movie() {
+                    Title = "Jaws 2",
+                    Rating = "PG-13",
+                    RunLength = 220,
+                    ReleaseYear = 1979,
+                    Description = "Shark eats people...again"
+                },
+                new Movie() {
+                    Title = "Dune",
+                    Rating = "PG-13",
+                    RunLength = 320,
+                    ReleaseYear = 1985,
+                    Description = "Based on book",
+                }
+            };
+            foreach (var movie in movies)
+                Add(movie, out var error);
+        }
 
         /// <summary>Adds a movie to the database.</summary>
         /// <param name="movie">The movie to add.</param>
+        /// <param name="errorMessage">The error message, if any.</param>
         /// <returns>The new movie.</returns>
         /// <remarks>
         /// Fails if:
@@ -32,8 +96,11 @@ namespace MovieLibrary
                 errorMessage = "Movie cannot be null";
                 return null;
             };
-            if (!movie.Validate(out errorMessage))
-                return null;
+
+            //Use IValidatableObject Luke...
+            //if (!movie.Validate(out errorMessage))
+            if (!new ObjectValidator().IsValid(movie, out errorMessage))
+                return null;            
 
             //Must be unique
             var existing = FindByTitle(movie.Title);
@@ -88,6 +155,12 @@ namespace MovieLibrary
             return items;
         }
 
+        /// <summary>Remove a movie.</summary>
+        /// <param name="id">ID of the movie to remove.</param>
+        /// <remarks>
+        /// Fails if:
+        /// - Id <= 0
+        /// </remarks>
         public void Remove ( int id )
         {
             //TODO: Switch to foreach
@@ -101,6 +174,18 @@ namespace MovieLibrary
                 };
         }
 
+        /// <summary>Updates a movie in the database.</summary>
+        /// <param name="movie">The new movie information.</param>
+        /// <param name="errorMessage">The error message, if any.</param>
+        /// <returns>true if successful or false otherwise.</returns>
+        /// <remarks>
+        /// Fails if:
+        ///   - Id is <= 0
+        ///   - Movie does not already exist
+        ///   - Movie is null
+        ///   - Movie is not valid
+        ///   - Movie title already exists
+        /// </remarks>
         public bool Update ( int id, Movie movie, out string errorMessage )
         {
             //Validate movie
@@ -109,7 +194,8 @@ namespace MovieLibrary
                 errorMessage = "Movie cannot be null";
                 return false;
             };
-            if (!movie.Validate(out errorMessage))
+            //if (!movie.Validate(out errorMessage))
+            if (!new ObjectValidator().IsValid(movie, out errorMessage))
                 return false;
 
             //Movie must already exist
