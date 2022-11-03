@@ -14,7 +14,7 @@
             };
 
             //Use IValidatableObject Luke...
-            if (!new ObjectValidator().IsValid(movie, out errorMessage))
+            if (!ObjectValidator.IsValid(movie, out errorMessage))
                 return null;
 
             //Must be unique
@@ -31,12 +31,7 @@
             errorMessage = null;
             return movie;
         }
-
-        /// <summary>Adds a movie to the database.</summary>
-        /// <param name="movie">The movie to add.</param>
-        /// <returns>The new movie.</returns>
-        protected abstract Movie AddCore ( Movie movie );
-
+        
         /// <inheritdoc />        
         public Movie Get ( int id )
         {
@@ -47,20 +42,11 @@
             return GetCore(id);
         }
 
-        /// <summary>Gets a movie by ID.</summary>
-        /// <param name="id">The ID of the movie.</param>
-        /// <returns>The movie, if any.</returns>
-        protected abstract Movie GetCore ( int id );
-
         /// <inheritdoc />                
         public IEnumerable<Movie> GetAll ()
         {
             return GetAllCore();
         }
-
-        /// <summary>Gets all movies.</summary>
-        /// <returns>The list of movies.</returns>
-        protected abstract IEnumerable<Movie> GetAllCore ();
 
         /// <inheritdoc />        
         public void Remove ( int id )
@@ -70,10 +56,6 @@
 
             RemoveCore(id);
         }
-
-        /// <summary>Removes a movie given its ID.</summary>
-        /// <param name="id">The movie ID.</param>
-        protected abstract void RemoveCore ( int id );
 
         /// <inheritdoc />        
         public bool Update ( int id, Movie movie, out string errorMessage )
@@ -85,7 +67,7 @@
                 return false;
             };
             
-            if (!new ObjectValidator().IsValid(movie, out errorMessage))
+            if (!ObjectValidator.IsValid(movie, out errorMessage))
                 return false;
 
             //Movie must already exist
@@ -109,6 +91,24 @@
             errorMessage = null;
             return true;
         }
+
+        /// <summary>Adds a movie to the database.</summary>
+        /// <param name="movie">The movie to add.</param>
+        /// <returns>The new movie.</returns>
+        protected abstract Movie AddCore ( Movie movie );
+
+        /// <summary>Gets a movie by ID.</summary>
+        /// <param name="id">The ID of the movie.</param>
+        /// <returns>The movie, if any.</returns>
+        protected abstract Movie GetCore ( int id );
+
+        /// <summary>Gets all movies.</summary>
+        /// <returns>The list of movies.</returns>
+        protected abstract IEnumerable<Movie> GetAllCore ();
+
+        /// <summary>Removes a movie given its ID.</summary>
+        /// <param name="id">The movie ID.</param>
+        protected abstract void RemoveCore ( int id );
 
         /// <summary>Updates an existing movie.</summary>
         /// <param name="id">The movie ID.</param>

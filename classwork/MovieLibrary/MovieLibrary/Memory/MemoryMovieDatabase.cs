@@ -3,71 +3,6 @@
     /// <summary>Provides an implementation of <see cref="IMovieDatabase"/> using an in-memory list.</summary>
     public class MemoryMovieDatabase : MovieDatabase
     {
-        //TODO: Seed database
-        public MemoryMovieDatabase ()
-        {
-            //Array/collection initializer syntax
-            //var movies = new Movie[3];
-
-            //Object initializer syntax
-            //new Movie("Jaws", "PG");
-            //var movie = new Movie();
-            //movie.Title = "Jaws";
-            //movie.Rating = "PG";
-            //movie.RunLength = 210;
-            //movie.ReleaseYear = 1977;
-            //movie.Description = "Shark eats people";
-            //movie.IsClassic = true;
-            //movies[0] = new Movie() {
-            //    Title = "Jaws",
-            //    Rating = "PG",
-            //    RunLength = 210,
-            //    ReleaseYear = 1977,
-            //    Description = "Shark eats people",
-            //    IsClassic = true,
-            //};            
-            //movies[1] = new Movie() {
-            //    Title = "Jaws 2",
-            //    Rating = "PG-13",
-            //    RunLength = 220,
-            //    ReleaseYear = 1979,
-            //    Description = "Shark eats people...again"                
-            //};
-            //movies[2] = new Movie() {
-            //            Title = "Dune",
-            //            Rating = "PG-13",
-            //            RunLength = 320,
-            //            ReleaseYear = 1985,
-            //            Description = "Based on book",
-            //        };
-            var movies = new Movie[] {
-                new Movie() {
-                    Title = "Jaws",
-                    Rating = "PG",
-                    RunLength = 210,
-                    ReleaseYear = 1977,
-                    Description = "Shark eats people",
-                    IsClassic = true,
-                },
-                new Movie() {
-                    Title = "Jaws 2",
-                    Rating = "PG-13",
-                    RunLength = 220,
-                    ReleaseYear = 1979,
-                    Description = "Shark eats people...again"
-                },
-                new Movie() {
-                    Title = "Dune",
-                    Rating = "PG-13",
-                    RunLength = 320,
-                    ReleaseYear = 1985,
-                    Description = "Based on book",
-                }
-            };
-            foreach (var movie in movies)
-                Add(movie, out var error);
-        }
-
         /// <inheritdoc />
         protected override Movie AddCore ( Movie movie )
         {
@@ -89,6 +24,7 @@
         /// <inheritdoc />
         protected override Movie GetCore ( int id )
         {
+            //TODO: Simplify this
             //Enumerate array looking for match            
             //for (var index = 0; index < _movies.Length; ++index)
             //if (_movies[index]?.Id == id)
@@ -104,6 +40,7 @@
         //When method returns IEnumerable<T> you MAY use an iterator instead
         protected override IEnumerable<Movie> GetAllCore ()
         {
+            //TODO: Simplify this
             //var items = new List<Movie>();
 
             //When returning an array, clone it...
@@ -124,7 +61,7 @@
         /// <inheritdoc />
         protected override void RemoveCore ( int id )
         {
-            //Enumerate array looking for match
+            //TODO: Simplify this
             for (var index = 0; index < _movies.Count; ++index)
                 if (_movies[index]?.Id == id)
                 {
@@ -145,6 +82,7 @@
 
         protected override Movie FindByTitle ( string title )
         {
+            //TODO: Simplify this
             foreach (var movie in _movies)
                 if (String.Equals(movie.Title, title, StringComparison.OrdinalIgnoreCase))
                     return movie;
@@ -156,6 +94,7 @@
 
         private Movie FindById ( int id )
         {
+            //TODO: Simplify this
             foreach (var movie in _movies)
                 if (movie.Id == id)
                     return movie;

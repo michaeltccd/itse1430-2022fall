@@ -53,8 +53,10 @@ namespace MovieLibrary.WinHost
             movie.RunLength = GetInt32(_txtRunLength);
             movie.ReleaseYear = GetInt32(_txtReleaseYear);
 
+            //var validator = new ObjectValidator();            
             //if (!movie.Validate(out var error))
-            if (!new ObjectValidator().IsValid(movie, out var error))
+            //if (!new ObjectValidator().IsValid(movie, out var error))
+            if (!ObjectValidator.IsValid(movie, out var error))
             {
                 DisplayError(error, "Save");
                 return;
@@ -77,6 +79,12 @@ namespace MovieLibrary.WinHost
 
         private int GetInt32 ( TextBox control )
         {
+            //String.Compare("A", "B");
+            //"A".Compare("B");
+
+            //String.Format("Format string", 1, 2);
+            //"Format string".Format(1, 2);
+
             if (Int32.TryParse(control.Text, out var result))
                 return result;
 
