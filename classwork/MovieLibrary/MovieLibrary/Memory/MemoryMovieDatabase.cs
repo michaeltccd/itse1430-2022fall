@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MovieLibrary.Memory
+﻿namespace MovieLibrary.Memory
 {
+    /// <summary>Provides an implementation of <see cref="IMovieDatabase"/> using an in-memory list.</summary>
     public class MemoryMovieDatabase : MovieDatabase
     {
         //TODO: Seed database
@@ -73,6 +68,7 @@ namespace MovieLibrary.Memory
                 Add(movie, out var error);
         }
 
+        /// <inheritdoc />
         protected override Movie AddCore ( Movie movie )
         {
             //Array
@@ -90,6 +86,7 @@ namespace MovieLibrary.Memory
             return movie;
         }
 
+        /// <inheritdoc />
         protected override Movie GetCore ( int id )
         {
             //Enumerate array looking for match            
@@ -103,6 +100,7 @@ namespace MovieLibrary.Memory
             return null;
         }
 
+        /// <inheritdoc />
         //When method returns IEnumerable<T> you MAY use an iterator instead
         protected override IEnumerable<Movie> GetAllCore ()
         {
@@ -123,6 +121,7 @@ namespace MovieLibrary.Memory
             //return items;
         }
 
+        /// <inheritdoc />
         protected override void RemoveCore ( int id )
         {
             //Enumerate array looking for match
@@ -135,12 +134,22 @@ namespace MovieLibrary.Memory
                 };
         }
 
+        /// <inheritdoc />
         protected override void UpdateCore ( int id, Movie movie )
         {
             //Copy 
             var oldMovie = FindById(id);
             movie.CopyTo(oldMovie);
             oldMovie.Id = id;
+        }
+
+        protected override Movie FindByTitle ( string title )
+        {
+            foreach (var movie in _movies)
+                if (String.Equals(movie.Title, title, StringComparison.OrdinalIgnoreCase))
+                    return movie;
+
+            return null;
         }
 
         #region Private Members
@@ -153,24 +162,11 @@ namespace MovieLibrary.Memory
 
             return null;
         }
-
-        protected override Movie FindByTitle ( string title )
-        {
-            foreach (var movie in _movies)
-                if (String.Equals(movie.Title, title, StringComparison.OrdinalIgnoreCase))
-                    return movie;
-
-            return null;
-        }
-
+        
         private int _id = 1;
 
-        //System.Collections.Generic
         //private Movie[] _movies = new Movie[100];
         private List<Movie> _movies = new List<Movie>();
-        //private Collection<Movie> _movies = new Collection<Movie>();
-        //List<string>;
-        //  List<int>;
         #endregion
     }
 }

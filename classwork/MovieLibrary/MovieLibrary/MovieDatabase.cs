@@ -1,18 +1,9 @@
 ﻿namespace MovieLibrary
 {
-    /// <summary>Provides a database of movies.</summary>
+    /// <summary>Provides a base implementation of <see cref="IMovieDatabase"/>.</summary>
     public abstract class MovieDatabase : IMovieDatabase
     {
-        /// <summary>Adds a movie to the database.</summary>
-        /// <param name="movie">The movie to add.</param>
-        /// <param name="errorMessage">The error message, if any.</param>
-        /// <returns>The new movie.</returns>
-        /// <remarks>
-        /// Fails if:
-        ///   - Movie is null
-        ///   - Movie is not valid
-        ///   - Movie title already exists
-        /// </remarks>
+        /// <inheritdoc />
         public Movie Add ( Movie movie, out string errorMessage )
         {
             //Validate movie
@@ -23,7 +14,6 @@
             };
 
             //Use IValidatableObject Luke...
-            //if (!movie.Validate(out errorMessage))
             if (!new ObjectValidator().IsValid(movie, out errorMessage))
                 return null;
 
@@ -37,97 +27,55 @@
 
             //Add
             movie = AddCore(movie);
-            //movie.Id = _id++;
-            //_movies.Add(movie.Clone());
 
             errorMessage = null;
             return movie;
         }
 
+        /// <summary>Adds a movie to the database.</summary>
+        /// <param name="movie">The movie to add.</param>
+        /// <returns>The new movie.</returns>
         protected abstract Movie AddCore ( Movie movie );
 
-        /// <summary>Gets a movie.</summary>
-        /// <param name="id">ID of the movie.</param>
-        /// <returns>The movie, if any.</returns>
-        /// <remarks>
-        /// Fails if:
-        ///    - Id is less than 1
-        /// </remarks>
+        /// <inheritdoc />        
         public Movie Get ( int id )
         {
             //TODO: Error
             if (id <= 0)
                 return null;
 
-            //foreach (var movie in _movies)
-            //    if (movie?.Id == id)
-            //        return movie.Clone();  //Clone because of ref type
             return GetCore(id);
         }
 
+        /// <summary>Gets a movie by ID.</summary>
+        /// <param name="id">The ID of the movie.</param>
+        /// <returns>The movie, if any.</returns>
         protected abstract Movie GetCore ( int id );
 
-        /// <summary>Gets all the movies.</summary>
-        /// <returns>The movies.</returns>
-        //public Movie[] GetAll ()
-        //When method returns IEnumerable<T> you MAY use an iterator instead
+        /// <inheritdoc />                
         public IEnumerable<Movie> GetAll ()
         {
             return GetAllCore();
-            //var items = new List<Movie>();
-
-            //When returning an array, clone it...
-            //var items = new Movie[_movies.Count];
-            //for (var index = 0; index < _movies.Length; ++index)
-            //    items[index] = _movies[index]?.Clone();
-            //var index = 0;
-            //foreach (var movie in _movies)
-            //{
-            //    //items[index++] = movie.Clone();
-            //    //items.Add(movie.Clone());
-            //    yield return movie.Clone();
-            //};
-
-            //return items;
         }
 
+        /// <summary>Gets all movies.</summary>
+        /// <returns>The list of movies.</returns>
         protected abstract IEnumerable<Movie> GetAllCore ();
 
-        /// <summary>Remove a movie.</summary>
-        /// <param name="id">ID of the movie to remove.</param>
-        /// <remarks>
-        /// Fails if:
-        /// - Id <= 0
-        /// </remarks>
+        /// <inheritdoc />        
         public void Remove ( int id )
         {
             if (id <= 0)
                 return;
 
             RemoveCore(id);
-            //Enumerate array looking for match
-            //for (var index = 0; index < _movies.Count; ++index)
-            //    if (_movies[index]?.Id == id)
-            //    {
-            //        //_movies[index] = null;
-            //        _movies.RemoveAt(index);
-            //        return;
-            //    };
         }
+
+        /// <summary>Removes a movie given its ID.</summary>
+        /// <param name="id">The movie ID.</param>
         protected abstract void RemoveCore ( int id );
 
-        /// <summary>Updates a movie in the database.</summary>
-        /// <param name="movie">The new movie information.</param>
-        /// <param name="errorMessage">The error message, if any.</param>
-        /// <returns>true if successful or false otherwise.</returns>
-        /// <remarks>
-        /// Fails if:
-        ///   - Id is <= 0
-        ///   - Movie does not already exist
-        ///   - Movie is null
-        ///   - Movie is not valid
-        ///   - Movie title already exists
-        /// </remarks>
+        /// <inheritdoc />        
         public bool Update ( int id, Movie movie, out string errorMessage )
         {
             //Validate movie
@@ -156,17 +104,20 @@
                 return false;
             };
 
-            UpdateCore(id, movie);
-            ////Copy 
-            //movie.CopyTo(oldMovie);
-            //oldMovie.Id = id;
+            UpdateCore(id, movie);            
 
             errorMessage = null;
             return true;
         }
 
+        /// <summary>Updates an existing movie.</summary>
+        /// <param name="id">The movie ID.</param>
+        /// <param name="movie">The movie details.</param>
         protected abstract void UpdateCore ( int id, Movie movie );
 
+        /// <summary>Finds a movie by its title.</summary>
+        /// <param name="title">The movie title.</param>
+        /// <returns>The movie, if any.</returns>
         protected abstract Movie FindByTitle ( string title );
     }
 }
