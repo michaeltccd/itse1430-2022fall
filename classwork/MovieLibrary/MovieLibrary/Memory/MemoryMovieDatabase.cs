@@ -24,36 +24,49 @@
         /// <inheritdoc />
         protected override Movie GetCore ( int id )
         {
-            //TODO: Simplify this
-            //Enumerate array looking for match            
-            //for (var index = 0; index < _movies.Length; ++index)
-            //if (_movies[index]?.Id == id)
-            //return _movies[index].Clone();  //Clone because of ref type
-            foreach (var movie in _movies)
-                if (movie?.Id == id)
-                    return movie.Clone();  //Clone because of ref type
+            return _movies.FirstOrDefault(x => x.Id == id)?.Clone();
 
-            return null;
+            ////Enumerate array looking for match            
+            ////for (var index = 0; index < _movies.Length; ++index)
+            ////if (_movies[index]?.Id == id)
+            ////return _movies[index].Clone();  //Clone because of ref type
+            //foreach (var movie in _movies)
+            //    if (movie?.Id == id)
+            //        return movie.Clone();  //Clone because of ref type
+
+            //return null;
         }
 
         /// <inheritdoc />
         //When method returns IEnumerable<T> you MAY use an iterator instead
         protected override IEnumerable<Movie> GetAllCore ()
         {
-            //TODO: Simplify this
-            //var items = new List<Movie>();
+            // Select transforms IEnumerable<S> into IEnumerable<T>
+            //return _movies.Select(x => x.Clone());
 
-            //When returning an array, clone it...
-            //var items = new Movie[_movies.Count];
-            //for (var index = 0; index < _movies.Length; ++index)
-            //    items[index] = _movies[index]?.Clone();
-            //var index = 0;
-            foreach (var movie in _movies)
-            {
-                //items[index++] = movie.Clone();
-                //items.Add(movie.Clone());
-                yield return movie.Clone();
-            };
+            //LINQ syntax version
+            //   from tempVar in IEnumerable<T>
+            //   where <condition>
+            //   order by
+            //   select <expression>
+            return from movie in _movies
+                   //where movie.Id > 10
+                   orderby movie.Title, movie.ReleaseYear
+                   select movie.Clone();
+
+            ////var items = new List<Movie>();
+
+            ////When returning an array, clone it...
+            ////var items = new Movie[_movies.Count];
+            ////for (var index = 0; index < _movies.Length; ++index)
+            ////    items[index] = _movies[index]?.Clone();
+            ////var index = 0;
+            //foreach (var movie in _movies)
+            //{
+            //    //items[index++] = movie.Clone();
+            //    //items.Add(movie.Clone());
+            //    yield return movie.Clone();
+            //};
 
             //return items;
         }
@@ -61,14 +74,15 @@
         /// <inheritdoc />
         protected override void RemoveCore ( int id )
         {
-            //TODO: Simplify this
-            for (var index = 0; index < _movies.Count; ++index)
-                if (_movies[index]?.Id == id)
-                {
-                    //_movies[index] = null;
-                    _movies.RemoveAt(index);
-                    return;
-                };
+            var movie = FindById(id);
+            _movies.Remove(movie);
+            //for (var index = 0; index < _movies.Count; ++index)
+            //    if (_movies[index]?.Id == id)
+            //    {
+            //        //_movies[index] = null;
+            //        _movies.RemoveAt(index);
+            //        return;
+            //    };
         }
 
         /// <inheritdoc />
@@ -80,27 +94,50 @@
             oldMovie.Id = id;
         }
 
+        /// <inheritdoc />
         protected override Movie FindByTitle ( string title )
         {
-            //TODO: Simplify this
-            foreach (var movie in _movies)
-                if (String.Equals(movie.Title, title, StringComparison.OrdinalIgnoreCase))
-                    return movie;
+            return _movies.FirstOrDefault(
+                        x => String.Equals(x.Title, title, StringComparison.OrdinalIgnoreCase));
+            //foreach (var movie in _movies)
+            //    if (String.Equals(movie.Title, title, StringComparison.OrdinalIgnoreCase))
+            //        return movie;
 
-            return null;
+            //return null;
         }
 
         #region Private Members
 
+        //Action -> Method with no return type
+        // Action<T> -> parameter of T
+        // Action<T1..T16> -> parameters of T1 to T16
+        //Func<R> -> Method with a return type of R
+        // Func<T, R> -> parameter of T
+        // Func<T1..T16, R> -> parameters of T1 to T16
         private Movie FindById ( int id )
         {
-            //TODO: Simplify this
-            foreach (var movie in _movies)
-                if (movie.Id == id)
-                    return movie;
+            // Where takes a IEnumerable<T> and returns all items that match the predicate
+            // defined by Func<Movie, bool>
+            //return _movies.Where(FilterById)
+            //              .FirstOrDefault();
+            // If you need extra data then a nested class with the data would be needed
+            // return _movies.FirstOrDefault(new MyHiddenClass(id).FilterById);
+            //return _movies.FirstOrDefault(FilterById);
 
-            return null;
+            //lambda - anonymous method/function
+            //  foo ( Movie x ) { return x.Id == id; }
+            return _movies.FirstOrDefault(x => x.Id == id);
+
+            //foreach (var movie in _movies)
+            //    if (movie.Id == id)
+            //        return movie;
+
+            //return null;
         }
+        //private bool FilterById ( Movie movie )
+        //{
+        //    return true;
+        //}
         
         private int _id = 1;
 

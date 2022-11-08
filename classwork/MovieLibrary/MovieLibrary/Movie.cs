@@ -39,16 +39,21 @@ namespace MovieLibrary
         /// <summary>Gets or sets the title.</summary>
         public string Title
         {
-            get { return _title ?? ""; }  
-            set { _title = value?.Trim() ?? ""; }
+            //Expression body
+            //get { return _title ?? ""; }  
+            //set { _title = value?.Trim() ?? ""; }
+            get => _title ?? "";            
+            set => _title = value?.Trim() ?? "";
         }
         private string _title;
 
         /// <summary>Gets or sets the description.</summary>
         public string Description
         {
-            get { return _description ?? ""; }
-            set { _description = value?.Trim() ?? ""; }
+            //get { return _description ?? ""; }
+            //set { _description = value?.Trim() ?? ""; }
+            get => _description ?? "";
+            set => _description = value?.Trim() ?? "";
         }         
         private string _description;
 
@@ -72,10 +77,12 @@ namespace MovieLibrary
         
         /// <summary>Determines if the movie is black and white.</summary>
         //public bool IsBlackAndWhite () { return _releaseYear < 1939; }
-        public bool IsBlackAndWhite  
-        {
-            get { return ReleaseYear < YearColorWasIntroduced; }
-        }
+        public bool IsBlackAndWhite => ReleaseYear < YearColorWasIntroduced;
+        //public bool IsBlackAndWhite = ReleaseYear < YearColorWasIntroduced;
+        //{
+        //    //get { return ReleaseYear < YearColorWasIntroduced; }
+        //    get => ReleaseYear < YearColorWasIntroduced;
+        //}
 
         //Public fields are allowed when they are constants
         public const int YearColorWasIntroduced = 1939;
@@ -102,12 +109,12 @@ namespace MovieLibrary
             movie.Rating = Rating;
             movie.IsClassic = IsClassic;            
         }
-        
+
         /// <inheritdoc />
-        public override string ToString ()
-        {            
-            return Title;
-        }
+        public override string ToString () => Title;
+        //{            
+        //    return Title;
+        //}
 
         public IEnumerable<ValidationResult> Validate ( ValidationContext validationContext )
         {

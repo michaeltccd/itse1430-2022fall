@@ -138,11 +138,20 @@ namespace MovieLibrary.WinHost
 
             _lstMovies.Items.Clear();
 
+            //Func<Movie, string> someFunc = OrderByTitle;
+            //var someResult = someFunc(new Movie());
+
             //Order movies by title, then by release year
             //Chain calls together
-            var items = movies.OrderBy(OrderByTitle)
-                           .ThenBy(OrderByReleaseYear)
-                           .ToArray();
+            //          movies.OrderBy(OrderByTitle());
+            //  foreach item in source
+            //      sortValue = func(item)
+            //      compare sortValue to other values
+            //var items = movies.OrderBy(OrderByTitle)
+            //               .ThenBy(OrderByReleaseYear)
+            var items = movies.OrderBy(x => x.Title)
+                              .ThenBy(x => x.ReleaseYear)
+                              .ToArray();
             //movies = movies.ThenBy();
 
             //Use Enumerable 
@@ -151,14 +160,14 @@ namespace MovieLibrary.WinHost
             //foreach (var movie in movies)
             //    _lstMovies.Items.Add(movie);
         }
-        private string OrderByTitle ( Movie movie )
-        {
-            return movie.Title;
-        }
-        private int OrderByReleaseYear ( Movie movie )
-        {
-            return movie.ReleaseYear;
-        }
+        //private string OrderByTitle ( Movie movie )  //Func<Movie, string>
+        //{
+        //    return movie.Title;
+        //}
+        //private int OrderByReleaseYear ( Movie movie )  //Func<Movie, int>
+        //{
+        //    return movie.ReleaseYear;
+        //}
 
         private Movie GetSelectedMovie ()
         {
