@@ -75,6 +75,9 @@
         protected override void RemoveCore ( int id )
         {
             var movie = FindById(id);
+            if (movie == null)
+                throw new NotSupportedException("Movie does not exist.");
+
             _movies.Remove(movie);
             //for (var index = 0; index < _movies.Count; ++index)
             //    if (_movies[index]?.Id == id)
