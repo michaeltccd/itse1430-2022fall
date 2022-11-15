@@ -68,7 +68,13 @@
             if (existing != null && existing.Id != id)
                 throw new InvalidOperationException("Movie title must be unique.");
 
-            UpdateCore(id, movie);            
+            try
+            {
+                UpdateCore(id, movie);
+            } catch (Exception e)
+            {
+                throw new Exception("Update failed", e);
+            };
         }
 
         /// <summary>Adds a movie to the database.</summary>

@@ -53,13 +53,17 @@ namespace MovieLibrary.WinHost
                     return;
                 } catch (InvalidOperationException ex)
                 {
-                    DisplayError("Movies must be unique.", "Add Failed");
+                    DisplayError("Movies must be unique.", "Add Failed");                    
                 } catch (ArgumentException ex)
                 {
                     DisplayError("You messed up developer.", "Add Failed");
                 } catch (Exception ex)
                 {
                     DisplayError(ex.Message, "Add Failed");
+
+                    //Rethrow
+                    //throw ex;
+                    //throw;
                 };
                 
             } while (true);
@@ -97,15 +101,24 @@ namespace MovieLibrary.WinHost
             {
                 if (child.ShowDialog(this) != DialogResult.OK)
                     return;
-
+                
                 try
                 {
-                    _movies.Update(movie.Id, child.SelectedMovie);
+                    Cursor = Cursors.WaitCursor;                    
+                    _movies.Update(movie.Id, child.SelectedMovie);                    
+                    System.Threading.Thread.Sleep(1000);
+                    //Cursor = Cursors.Default;
+
                     UpdateUI();
                     return;                    
                 } catch (Exception ex)
                 {
+                    //Cursor = Cursors.Default;
                     DisplayError(ex.Message, "Update Failed");
+                } finally
+                {
+                    //Guaranteed to run
+                    Cursor = Cursors.Default;
                 };
             } while (true);
         }
@@ -143,7 +156,7 @@ namespace MovieLibrary.WinHost
             if (initialLoad && 
                     //movies.Count() == 0)
                     //movies.FirstOrDefault() == null)            
-                    movies.Any())
+                    !movies.Any())
             {
                 if (Confirm("Do you want to seed some movies?", "Database Empty"))
                 {
@@ -174,14 +187,6 @@ namespace MovieLibrary.WinHost
             //foreach (var movie in movies)
             //    _lstMovies.Items.Add(movie);
         }
-        //private string OrderByTitle ( Movie movie )  //Func<Movie, string>
-        //{
-        //    return movie.Title;
-        //}
-        //private int OrderByReleaseYear ( Movie movie )  //Func<Movie, int>
-        //{
-        //    return movie.ReleaseYear;
-        //}
 
         private Movie GetSelectedMovie ()
         {

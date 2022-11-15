@@ -6,15 +6,6 @@
         /// <inheritdoc />
         protected override Movie AddCore ( Movie movie )
         {
-            //Array
-            // Find first null element
-            // If found then set to new movie
-            // Else
-            //   Resize the array 
-            //   Copy all existing elements over
-            //   Set 'oldarray.Length' to new movie
-           
-            //Add
             movie.Id = _id++;
             _movies.Add(movie.Clone());
 
@@ -25,16 +16,6 @@
         protected override Movie GetCore ( int id )
         {
             return _movies.FirstOrDefault(x => x.Id == id)?.Clone();
-
-            ////Enumerate array looking for match            
-            ////for (var index = 0; index < _movies.Length; ++index)
-            ////if (_movies[index]?.Id == id)
-            ////return _movies[index].Clone();  //Clone because of ref type
-            //foreach (var movie in _movies)
-            //    if (movie?.Id == id)
-            //        return movie.Clone();  //Clone because of ref type
-
-            //return null;
         }
 
         /// <inheritdoc />
@@ -53,46 +34,24 @@
                    //where movie.Id > 10
                    orderby movie.Title, movie.ReleaseYear
                    select movie.Clone();
-
-            ////var items = new List<Movie>();
-
-            ////When returning an array, clone it...
-            ////var items = new Movie[_movies.Count];
-            ////for (var index = 0; index < _movies.Length; ++index)
-            ////    items[index] = _movies[index]?.Clone();
-            ////var index = 0;
-            //foreach (var movie in _movies)
-            //{
-            //    //items[index++] = movie.Clone();
-            //    //items.Add(movie.Clone());
-            //    yield return movie.Clone();
-            //};
-
-            //return items;
         }
 
         /// <inheritdoc />
         protected override void RemoveCore ( int id )
         {
             var movie = FindById(id);
-            if (movie == null)
-                throw new NotSupportedException("Movie does not exist.");
-
-            _movies.Remove(movie);
-            //for (var index = 0; index < _movies.Count; ++index)
-            //    if (_movies[index]?.Id == id)
-            //    {
-            //        //_movies[index] = null;
-            //        _movies.RemoveAt(index);
-            //        return;
-            //    };
+            if (movie != null)
+                _movies.Remove(movie);
         }
 
         /// <inheritdoc />
         protected override void UpdateCore ( int id, Movie movie )
         {
             //Copy 
-            var oldMovie = FindById(id);
+            var oldMovie = FindById(id);            
+            if (oldMovie == null)
+                throw new NotSupportedException("Movie does not exist.");
+
             movie.CopyTo(oldMovie);
             oldMovie.Id = id;
         }
@@ -102,11 +61,6 @@
         {
             return _movies.FirstOrDefault(
                         x => String.Equals(x.Title, title, StringComparison.OrdinalIgnoreCase));
-            //foreach (var movie in _movies)
-            //    if (String.Equals(movie.Title, title, StringComparison.OrdinalIgnoreCase))
-            //        return movie;
-
-            //return null;
         }
 
         #region Private Members
