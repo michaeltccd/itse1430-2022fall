@@ -209,7 +209,7 @@ namespace MovieLibrary.WinHost
         }
 
         //private Movie _movie;
-        private IMovieDatabase _movies = new Memory.MemoryMovieDatabase();
+        private IMovieDatabase _movies = new Sql.SqlMovieDatabase(Program.GetConnectionString("AppDatabase"));
         #endregion        
     }
 }
