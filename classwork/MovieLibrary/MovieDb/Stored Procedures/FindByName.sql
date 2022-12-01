@@ -12,7 +12,7 @@ AS BEGIN
     SET NOCOUNT ON;
 
     SET @name = LTRIM(RTRIM(ISNULL(@name, '')))
-
+        
     SELECT Id, Name, Description, Rating, ReleaseYear, RunLength, IsClassic
     FROM Movies
     WHERE Name = @name

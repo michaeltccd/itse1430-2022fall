@@ -6,9 +6,9 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace MovieLibrary
-{    
-    /// <summary>Represents a movie.</summary>
-    public class Movie : IValidatableObject
+{
+    /// <summary>Represents a movie.</summary>    
+    public class Movie //: IValidatableObject
     {
         #region Construction
 
@@ -37,6 +37,10 @@ namespace MovieLibrary
         public int Id { get; set; }
 
         /// <summary>Gets or sets the title.</summary>
+        //[RequiredAttribute()]        
+        //[Required()]
+        [Required(AllowEmptyStrings = false)]
+        [StringLengthAttribute(100, MinimumLength = 1)]
         public string Title
         {
             //Expression body            
@@ -54,13 +58,18 @@ namespace MovieLibrary
         private string _description;
 
         /// <summary>Gets or sets the run length in minutes.</summary>
+        [Range(0, Int32.MaxValue, ErrorMessage = "Run length must be >= 0")]
+        [Display(Name = "Run Length")]
         public int RunLength { get; set; }
 
         /// <summary>Gets or sets the release year.</summary>
         /// <value>Default is 1900.</value>
+        [Range(1900, 2100)]
+        [Display(Name = "Release Year")]
         public int ReleaseYear { get; set; } = 1900;
 
         /// <summary>Gets or sets the MPAA rating.</summary>
+        [Required(AllowEmptyStrings = false)]
         public string Rating
         {
             get => _rating ?? "";                   //{ return _rating ?? ""; }
@@ -108,23 +117,31 @@ namespace MovieLibrary
         /// <inheritdoc />
         public override string ToString () => Title; //{ return Title; }
 
-        public IEnumerable<ValidationResult> Validate ( ValidationContext validationContext )
-        {
-            var errors = new List<ValidationResult>();
+        //public IEnumerable<ValidationResult> Validate ( ValidationContext validationContext )
+        //{
+        //    var errors = new List<ValidationResult>();
 
-            if (Title.Length == 0)
-                errors.Add(new ValidationResult("Title is required", new[] { nameof(Title) } ));
+        //    //if (Title.Length == 0)
+        //    //    errors.Add(new ValidationResult("Title is required", new[] { nameof(Title) } ));
 
-            if (Rating.Length == 0)
-                errors.Add(new ValidationResult("Rating is required", new[] { nameof(Rating) }));
-                
-            if (RunLength <= 0)
-                errors.Add(new ValidationResult("Run Length must be > 0", new[] { nameof(RunLength) }));
+        //    //if (Rating.Length == 0)
+        //    //    errors.Add(new ValidationResult("Rating is required", new[] { nameof(Rating) }));
 
-            if (ReleaseYear < 1900)
-                errors.Add(new ValidationResult("Release Year must be >= 1900", new[] { nameof (ReleaseYear) }));
+        //    //if (RunLength <= 0)
+        //    //    errors.Add(new ValidationResult("Run Length must be > 0", new[] { nameof(RunLength) }));
 
-            return errors;
-        }
+        //    //if (ReleaseYear < 1900)
+        //    //    errors.Add(new ValidationResult("Release Year must be >= 1900", new[] { nameof (ReleaseYear) }));
+
+        //    return errors;
+        //}
+
+        [Obsolete("Depreciated in v1. Use NewMethod instead.")]
+        public void OldMethod ()
+        { }
+
+        [System.Diagnostics.Conditional("DEBUG")]
+        public void Dump ()
+        { }
     }
 }

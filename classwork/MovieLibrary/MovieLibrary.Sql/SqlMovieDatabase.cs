@@ -81,9 +81,9 @@ namespace MovieLibrary.Sql
                         return new Movie() {
                             Id = (int)reader[0],              //Ordinal with cast
                             Title = reader["Name"] as string, //Column name with cast
-                            Description = reader.GetString(2),//Typed name with ordinal
+                            Description = reader.IsDBNull(2) ? "" : reader.GetString(2),//Typed name with ordinal
                             Rating = reader.GetString("Rating"),
-                            RunLength = reader.GetInt32("RunLength"), //Typped name with column
+                            RunLength = reader.GetInt32("RunLength"), //Typed name with column
                             ReleaseYear = reader.GetFieldValue<int>("ReleaseYear"),
                             IsClassic = reader.GetFieldValue<bool>("IsClassic")
                         };
