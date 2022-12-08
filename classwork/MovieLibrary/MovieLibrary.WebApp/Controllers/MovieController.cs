@@ -16,10 +16,11 @@ namespace MovieLibrary.WebApp.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<Movie>> Index ()
         {
-            var movies = _database.GetAll();
+            var movies = _database.GetAll()
+                                  .OrderBy(x => x.Title);
 
             //return Ok(movies);
-            return View(movies);
+            return View("index", movies);
         }
 
         [HttpGet]
@@ -30,6 +31,94 @@ namespace MovieLibrary.WebApp.Controllers
                 return NotFound();
 
             return View(movie);
+        }
+
+        [HttpGet]
+        public ActionResult<Movie> Edit ( int id )
+        {
+            var movie = _database.Get(id);
+            if (movie == null)
+                return NotFound();
+
+            return View(movie);
+        }
+
+        [HttpPost]
+        public ActionResult Edit ( Movie model )
+        {
+            if (ModelState.IsValid)
+            {
+                var movie = _database.Get(model.Id);
+                if (movie == null)
+                    return NotFound();
+
+                try
+                {
+                    _database.Update(model.Id, model);
+
+                    return RedirectToAction("Index");
+                } catch (Exception e)
+                {
+                    ModelState.AddModelError("", e.Message);
+                };
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult<Movie> Create ( )
+        {
+            return View(new Movie());
+        }
+
+        [HttpPost]
+        public ActionResult Create ( Movie model )
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _database.Add(model);
+
+                    return RedirectToAction("Index");
+                } catch (Exception e)
+                {
+                    ModelState.AddModelError("", e.Message);
+                };
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public ActionResult<Movie> Delete ( int id )
+        {
+            var movie = _database.Get(id);
+            if (movie == null)
+                return NotFound();
+
+            return View(movie);
+        }
+
+        [HttpPost]
+        public ActionResult Delete ( Movie model )
+        {            
+            var movie = _database.Get(model.Id);
+            if (movie == null)
+                return NotFound();
+
+            try
+            {
+                _database.Remove(model.Id);
+
+                return RedirectToAction("Index");
+            } catch (Exception e)
+            {
+                ModelState.AddModelError("", e.Message);
+            };
+
+            return View(model);
         }
 
         private readonly Sql.SqlMovieDatabase _database;

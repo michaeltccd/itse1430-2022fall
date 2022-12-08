@@ -82,7 +82,7 @@ namespace MovieLibrary
         
         /// <summary>Determines if the movie is black and white.</summary>
         //public bool IsBlackAndWhite () { return _releaseYear < 1939; }
-        public bool IsBlackAndWhite => ReleaseYear < YearColorWasIntroduced;
+        //public bool IsBlackAndWhite => ReleaseYear < YearColorWasIntroduced;
         //{
         //    //get { return ReleaseYear < YearColorWasIntroduced; }
         //    get => ReleaseYear < YearColorWasIntroduced;
